@@ -1,5 +1,5 @@
 # Based on https://github.com/pytorch/pytorch/blob/master/Dockerfile
-FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu16.04 
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
          build-essential \
@@ -27,7 +27,10 @@ RUN conda install pytorch torchvision cuda92 -c pytorch
 # Install face-alignment package
 WORKDIR /workspace
 RUN chmod -R a+w /workspace
-RUN git clone https://github.com/1adrianb/face-alignment
+RUN git clone https://github.com/ArmstrongYang/face-alignment.git
 WORKDIR /workspace/face-alignment
 RUN pip install -r requirements.txt
 RUN python setup.py install
+RUN pip install jupyterlab
+WORKDIR /workspace/face-alignment/examples
+RUN python detect_landmarks_in_image.py
